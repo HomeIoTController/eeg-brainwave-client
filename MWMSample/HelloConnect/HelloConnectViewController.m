@@ -38,6 +38,9 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
+    NSLog(@"loooog");
+    NSLog(@"%@", self->_jwt);
+    
     toolbar.hidden = YES;
     devicePicker.hidden = YES;
     
@@ -135,13 +138,13 @@
 -(void)put_alertWithOK: (NSString*) title message:(NSString*) message
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        put_alertLast = put_alert;
-        put_alert = [[UIAlertView alloc]initWithTitle:title message:message delegate:nil cancelButtonTitle:nil otherButtonTitles:@" OK ", nil];
+        self->put_alertLast = self->put_alert;
+        self->put_alert = [[UIAlertView alloc]initWithTitle:title message:message delegate:nil cancelButtonTitle:nil otherButtonTitles:@" OK ", nil];
         
-        if (put_alertLast != nil) {
-            [put_alertLast dismissWithClickedButtonIndex:0 animated:NO];
+        if (self->put_alertLast != nil) {
+            [self->put_alertLast dismissWithClickedButtonIndex:0 animated:NO];
         }
-        [put_alert show];
+        [self->put_alert show];
     }); // do all alerts on the main thread
 }
 
@@ -239,22 +242,22 @@ static int i = 0;
     
     dispatch_async(dispatch_get_main_queue(), ^{  // do all alerts on the main thread
         
-        if (![devicesArray containsObject:deviceID])
+        if (![self->devicesArray containsObject:deviceID])
         {
-            [tempDevicesArray addObject:deviceID];
-            devicesArray = tempDevicesArray;
-            [devNameArray addObject:devName];
-            [mfgIDArray addObject:mfgID];
+            [self->tempDevicesArray addObject:deviceID];
+            self->devicesArray = self->tempDevicesArray;
+            [self->devNameArray addObject:devName];
+            [self->mfgIDArray addObject:mfgID];
             //store
-            [deviceTypeArray addObject:@0];
-            [devicePicker reloadAllComponents];
+            [self->deviceTypeArray addObject:@0];
+            [self->devicePicker reloadAllComponents];
         }
         
-        if (devicesArray.count > 0) {
-            devicePicker.userInteractionEnabled = YES;
+        if (self->devicesArray.count > 0) {
+            self->devicePicker.userInteractionEnabled = YES;
         }
         else{
-            devicePicker.userInteractionEnabled = NO;
+            self->devicePicker.userInteractionEnabled = NO;
         }
     });
 }

@@ -88,6 +88,7 @@
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
 @property (weak, nonatomic) IBOutlet UIPickerView *devicePicker;
 @property (nonatomic, retain) NSArray *devicesArray;
+@property (strong, nonatomic) NSString* jwt;
 
 
 - (IBAction)onDisconnectClicked:(id)sender;

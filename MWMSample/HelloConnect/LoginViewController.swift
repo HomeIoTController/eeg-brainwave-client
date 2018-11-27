@@ -28,12 +28,29 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    func convertToDictionary(text: String) -> [String: Any]? {
+        if let data = text.data(using: .utf8) {
+            do {
+                return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        return nil
+    }
     
     @IBAction func login(_ sender: UIButton) {
         
-        Alamofire.request("https://httpbin.org/get").responseJSON { response in
-            print("Request: \(String(describing: response.request))")   // original url request
-            print("Response: \(String(describing: response.response))") // http url response
+        let parameters: Parameters = [
+            "operationName": "LoginMutation",
+            "query": "mutation LoginMutation($email: String!, $password: String!) { login(email: $email, password: $password) }",
+            "variables": convertToDictionary(text: "{\"email\":\"da1\",\"password\":\"da1\"}")!
+        ]
+        
+        print(parameters)
+        
+        Alamofire.request("http://192.168.2.25:3000/graphql", method: .post, parameters: parameters, encoding: JSONEncoding.default).responseJSON { response in
+
             print("Result: \(response.result)")                         // response serialization result
             
             if let json = response.result.value {
@@ -41,13 +58,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             }
             
             if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
-                print("Data: \(utf8Text)") // original server data as UTF8 string
-            }
-            
-            if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "HelloConnectViewController") as? HelloConnectViewController {
-                print("entrou")
-                if let navigator = self.navigationController {
-                    navigator.pushViewController(viewController, animated: true)
+                let token = self.convertToDictionary(text: utf8Text);
+                let login = token?["data"] as! Dictionary<String, String>
+                let jwt: String = login["login"]!;
+                
+                if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "HelloConnectViewController") as? HelloConnectViewController {
+                    if let navigator = self.navigationController {
+                        print(jwt)
+                        viewController.jwt = jwt;
+                        navigator.pushViewController(viewController, animated: true)
+                    }
                 }
             }
         }
