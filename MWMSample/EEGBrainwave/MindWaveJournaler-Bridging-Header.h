@@ -1,7 +1,10 @@
 //
-//  Use this file to import your target's public headers that you would like to expose to Swift.
+//  MindWaveJournaler-Bridging-Header.h
+//  eeg-brainwave-client
 //
-
+//  Created by Daniel Marchena Parreira on 2018-11-28.
+//  Copyright © 2018 neurosky. All rights reserved.
+//
 
 #ifndef MindWaveJournaler_Bridging_Header_h
 #define MindWaveJournaler_Bridging_Header_h

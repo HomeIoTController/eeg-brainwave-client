@@ -1,5 +1,22 @@
 # Light Control - BCI
 
+This is an iOS app that connects with MindWave 2 Mobile via bluetooth in order to dispatch commands to [Light Control - GraphQL API](https://github.com/PhilipsHUEController/api).
+
+## Getting Started
+
+* Clone the project repository by running the command bellow if you use HTTPS
+  * ```git clone https://github.com/PhilipsHUEController/eeg-brainwave-client.git```
+
+
+* After cloning, run:
+  * Install [Cocoa Pods](https://cocoapods.org/)
+  * `pod install`
+
+
+* Open `eeg-brainwave-client.xcworkspace` project file
+
+## Quick description about MWM Comm SDK from NeuroSky
+
 If this is your first time using the MWM Comm SDK for iOS, please start
 by reading the "neurosky_mwm_sdk_for_ios" PDF.  It will
 tell you everything you need to know to get started.
