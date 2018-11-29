@@ -64,7 +64,7 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "server_addrs"
-            value = "192.168.2.25:3000"
+            value = "172.20.10.6:3000"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>

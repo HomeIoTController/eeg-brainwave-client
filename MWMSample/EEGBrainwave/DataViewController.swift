@@ -231,8 +231,12 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     func updateSignalStatus(poorSignal: Int32) {
         if (poorSignal == 0){
             self.statusImgView.image = UIImage(named: "connected_v1")
-        } else if (poorSignal > 0 && poorSignal < 200) {
+        } else if (poorSignal > 0 && poorSignal < 50) {
+            self.statusImgView.image = UIImage(named: "connecting1_v1")
+        } else if (poorSignal >= 50 && poorSignal < 100) {
             self.statusImgView.image = UIImage(named: "connecting2_v1")
+        } else if (poorSignal >= 100 && poorSignal < 200) {
+            self.statusImgView.image = UIImage(named: "connecting3_v1")
         } else if (poorSignal == 200) {
             self.statusImgView.image = UIImage(named: "nosignal_v1")
         }
