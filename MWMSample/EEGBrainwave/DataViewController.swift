@@ -281,12 +281,13 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     
     func triggerCommandCall(sample: Parameters) {
         
-        if (self.enableTriggerCommand == false) { return; }
+        //if (self.enableTriggerCommand == false) { return; }
         
         self.brainCommands.forEach { (command) in
             if (command["type"] as! String != "bciCommand") {
                 return
             }
+            
             if (command["from"] as! String == "attention") {
                 let currentAttention  = sample["attention"] as! Int32;
                 let valueTo = (command["valueTo"] as! NSString).intValue;
@@ -294,7 +295,7 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
                 if (currentAttention >= valueFrom && currentAttention <= valueTo) {
                     sendCommandToServer(command: command);
                 }
-            } else if (command["from"] as! String == "blink") {
+            } else if (command["from"] as! String == "blinking") {
                 let currentBlink = sample["blink"] as! Int32;
                 let valueTo = (command["valueTo"] as! NSString).intValue;
                 let valueFrom = (command["valueFrom"] as! NSString).intValue;
