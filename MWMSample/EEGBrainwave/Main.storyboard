@@ -27,13 +27,21 @@
                                 <color key="backgroundColor" red="1" green="0.14506324109999999" blue="0.14137852479999999" alpha="0.84705882349999995" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hrR-TF-C1T">
-                                <rect key="frame" x="7" y="134" width="360" height="63"/>
+                                <rect key="frame" x="9" y="64" width="266" height="63"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                             </pickerView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bRa-Mb-OOx">
-                                <rect key="frame" x="275" y="64" width="92" height="69"/>
+                                <rect key="frame" x="283" y="64" width="92" height="63"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                             </imageView>
+                            <pickerView tag="1" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dtv-lm-L8y">
+                                <rect key="frame" x="9" y="130" width="286" height="62"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                            </pickerView>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="tAi-Yy-zvT">
+                                <rect key="frame" x="312" y="146" width="49" height="31"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                            </switch>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -43,6 +51,8 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="devicePicker" destination="hrR-TF-C1T" id="bLh-d5-HIT"/>
+                        <outlet property="feelingPicker" destination="dtv-lm-L8y" id="E47-WE-Yfg"/>
+                        <outlet property="feelingSwitch" destination="tAi-Yy-zvT" id="MLc-R2-Ny0"/>
                         <outlet property="mainChart" destination="zwK-gA-leb" id="Pde-T7-DjP"/>
                         <outlet property="statusImgView" destination="bRa-Mb-OOx" id="bRI-m0-7pY"/>
                     </connections>

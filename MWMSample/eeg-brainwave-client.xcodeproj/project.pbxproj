@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		00BAE1D8E6A41413A3E350A9 /* Pods_eeg_brainwave_client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCAF888A90C938408B817E25 /* Pods_eeg_brainwave_client.framework */; };
 		07D52D551892E57D0056CCE3 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07D52D541892E57D0056CCE3 /* Accelerate.framework */; };
+		652AFACD21B1550600C3D32C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 652AFACB21B1550600C3D32C /* LaunchScreen.storyboard */; };
+		652AFACE21B1550600C3D32C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 652AFACC21B1550600C3D32C /* Main.storyboard */; };
 		657C8F7D21AF3E60009EE696 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657C8F7721AF3E60009EE696 /* Utils.swift */; };
 		657C8F7E21AF3E60009EE696 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657C8F7821AF3E60009EE696 /* LoginViewController.swift */; };
 		657C8F7F21AF3E60009EE696 /* MindMobileEEGSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657C8F7A21AF3E60009EE696 /* MindMobileEEGSample.swift */; };
@@ -16,8 +18,6 @@
 		657C8F9621AF3E71009EE696 /* DataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657C8F8D21AF3E71009EE696 /* DataViewController.swift */; };
 		657C8F9821AF3E71009EE696 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657C8F9021AF3E71009EE696 /* AppDelegate.swift */; };
 		657C8F9921AF3FD5009EE696 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 657C8F8221AF3E71009EE696 /* Images.xcassets */; };
-		657C8F9B21AF3FD5009EE696 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 657C8F8121AF3E71009EE696 /* LaunchScreen.storyboard */; };
-		657C8F9C21AF3FE4009EE696 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D32701571891FD8300063681 /* Main.storyboard */; };
 		D32701461891FD8200063681 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D32701451891FD8200063681 /* Foundation.framework */; };
 		D32701481891FD8200063681 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D32701471891FD8200063681 /* CoreGraphics.framework */; };
 		D327014A1891FD8200063681 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D32701491891FD8200063681 /* UIKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
@@ -32,22 +32,22 @@
 		21520D6CEFA89940D4EECA9F /* Pods-HelloMWMiOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloMWMiOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HelloMWMiOS/Pods-HelloMWMiOS.debug.xcconfig"; sourceTree = "<group>"; };
 		5468F23F2EDBEC591771C28E /* Pods_HelloMWMiOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HelloMWMiOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F1547EBD5DCF59F66D27003 /* Pods-HelloMWMiOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloMWMiOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-HelloMWMiOS/Pods-HelloMWMiOS.release.xcconfig"; sourceTree = "<group>"; };
-		657C8F7021AF3CA8009EE696 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = EEGBrainwave/LaunchScreen.storyboard; sourceTree = SOURCE_ROOT; };
+		652AFACB21B1550600C3D32C /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "/Users/daniel/Desktop/workspace/PhilipsHUEController/eeg-brainwave-client/MWMSample/EEGBrainwave/LaunchScreen.storyboard"; sourceTree = "<absolute>"; };
+		652AFACC21B1550600C3D32C /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		657C8F7421AF3CB5009EE696 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = EEGBrainwave/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		657C8F7721AF3E60009EE696 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Utils.swift; path = EEGBrainwave/Utils.swift; sourceTree = SOURCE_ROOT; };
 		657C8F7821AF3E60009EE696 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = EEGBrainwave/LoginViewController.swift; sourceTree = SOURCE_ROOT; };
 		657C8F7921AF3E60009EE696 /* MindWaveJournaler-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MindWaveJournaler-Bridging-Header.h"; path = "EEGBrainwave/MindWaveJournaler-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		657C8F7A21AF3E60009EE696 /* MindMobileEEGSample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MindMobileEEGSample.swift; path = EEGBrainwave/MindMobileEEGSample.swift; sourceTree = SOURCE_ROOT; };
-		657C8F8121AF3E71009EE696 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = EEGBrainwave/LaunchScreen.storyboard; sourceTree = SOURCE_ROOT; };
 		657C8F8221AF3E71009EE696 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = EEGBrainwave/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		657C8F8321AF3E71009EE696 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = EEGBrainwave/Info.plist; sourceTree = SOURCE_ROOT; };
-		657C8F8621AF3E71009EE696 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Main.storyboard; sourceTree = "<group>"; };
 		657C8F8821AF3E71009EE696 /* MWMEnum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWMEnum.h; sourceTree = "<group>"; };
 		657C8F8921AF3E71009EE696 /* MWMDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWMDelegate.h; sourceTree = "<group>"; };
 		657C8F8A21AF3E71009EE696 /* MWMDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWMDevice.h; sourceTree = "<group>"; };
 		657C8F8B21AF3E71009EE696 /* libMWMSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMWMSDK.a; sourceTree = "<group>"; };
 		657C8F8D21AF3E71009EE696 /* DataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataViewController.swift; path = EEGBrainwave/DataViewController.swift; sourceTree = SOURCE_ROOT; };
 		657C8F9021AF3E71009EE696 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = EEGBrainwave/AppDelegate.swift; sourceTree = SOURCE_ROOT; };
+		65E6C81421B156200011F131 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = EEGBrainwave/Images.xcassets; sourceTree = "<group>"; };
 		A3209FBC0D68204E42CD575C /* Pods-eeg-brainwave-client.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eeg-brainwave-client.release.xcconfig"; path = "Pods/Target Support Files/Pods-eeg-brainwave-client/Pods-eeg-brainwave-client.release.xcconfig"; sourceTree = "<group>"; };
 		B3441E6504EF546131BF1939 /* Pods-eeg-brainwave-client.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eeg-brainwave-client.debug.xcconfig"; path = "Pods/Target Support Files/Pods-eeg-brainwave-client/Pods-eeg-brainwave-client.debug.xcconfig"; sourceTree = "<group>"; };
 		D32701421891FD8200063681 /* eeg-brainwave-client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "eeg-brainwave-client.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -105,15 +105,6 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		657C8F8421AF3E71009EE696 /* Base.lproj */ = {
-			isa = PBXGroup;
-			children = (
-				657C8F8521AF3E71009EE696 /* Main.storyboard */,
-			);
-			name = Base.lproj;
-			path = EEGBrainwave/Base.lproj;
-			sourceTree = SOURCE_ROOT;
-		};
 		657C8F8721AF3E71009EE696 /* libn */ = {
 			isa = PBXGroup;
 			children = (
@@ -126,17 +117,10 @@
 			path = EEGBrainwave/libn;
 			sourceTree = SOURCE_ROOT;
 		};
-		657C8F8F21AF3E71009EE696 /* en.lproj */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = en.lproj;
-			path = EEGBrainwave/en.lproj;
-			sourceTree = SOURCE_ROOT;
-		};
 		D32701391891FD8200063681 = {
 			isa = PBXGroup;
 			children = (
+				65E6C81421B156200011F131 /* Images.xcassets */,
 				D327014B1891FD8200063681 /* eeg-brainwave-client */,
 				D32701441891FD8200063681 /* Frameworks */,
 				D32701431891FD8200063681 /* Products */,
@@ -179,20 +163,18 @@
 		D327014B1891FD8200063681 /* eeg-brainwave-client */ = {
 			isa = PBXGroup;
 			children = (
+				652AFACB21B1550600C3D32C /* LaunchScreen.storyboard */,
+				652AFACC21B1550600C3D32C /* Main.storyboard */,
 				657C8F9021AF3E71009EE696 /* AppDelegate.swift */,
-				657C8F8421AF3E71009EE696 /* Base.lproj */,
 				657C8F8D21AF3E71009EE696 /* DataViewController.swift */,
-				657C8F8F21AF3E71009EE696 /* en.lproj */,
 				657C8F7721AF3E60009EE696 /* Utils.swift */,
 				657C8F8221AF3E71009EE696 /* Images.xcassets */,
 				657C8F8321AF3E71009EE696 /* Info.plist */,
-				657C8F8121AF3E71009EE696 /* LaunchScreen.storyboard */,
 				657C8F8721AF3E71009EE696 /* libn */,
 				657C8F7821AF3E60009EE696 /* LoginViewController.swift */,
 				657C8F7A21AF3E60009EE696 /* MindMobileEEGSample.swift */,
 				657C8F7921AF3E60009EE696 /* MindWaveJournaler-Bridging-Header.h */,
 				657C8F7421AF3CB5009EE696 /* Images.xcassets */,
-				657C8F7021AF3CA8009EE696 /* LaunchScreen.storyboard */,
 				E3382A311A917C96007CBE21 /* libn */,
 				D32701571891FD8300063681 /* Main.storyboard */,
 			);
@@ -277,9 +259,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				657C8F9C21AF3FE4009EE696 /* Main.storyboard in Resources */,
 				657C8F9921AF3FD5009EE696 /* Images.xcassets in Resources */,
-				657C8F9B21AF3FD5009EE696 /* LaunchScreen.storyboard in Resources */,
+				652AFACE21B1550600C3D32C /* Main.storyboard in Resources */,
+				652AFACD21B1550600C3D32C /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -354,14 +336,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		657C8F8521AF3E71009EE696 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				657C8F8621AF3E71009EE696 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		D32701571891FD8300063681 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

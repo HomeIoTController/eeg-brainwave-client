@@ -17,7 +17,30 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     @IBOutlet weak var mainChart: LineChartView!
     @IBOutlet weak var statusImgView: UIImageView!
     @IBOutlet weak var devicePicker: UIPickerView!
+    @IBOutlet weak var feelingPicker: UIPickerView!
+    @IBOutlet weak var feelingSwitch: UISwitch!
+    
     var devicePickerData: [Parameters] = [];
+    var feelingPickerData: [String] = [
+        // Pleasant Feelings
+        "OPEN",
+        "HAPPY",
+        "ALIVE",
+        "GOOD",
+        "LOVE",
+        "INTERESTED",
+        "POSITIVE",
+        "STRONG",
+        // Difficult/Unpleasant Feelings
+        "ANGRY",
+        "DEPRESSED",
+        "CONFUSED",
+        "HELPLESS",
+        "INDIFFERENT",
+        "AFRAID",
+        "HURT",
+        "SAD"
+    ];
     
     var jwt: String!
     var brainCommands : [Parameters] = []
@@ -132,11 +155,35 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         devicePicker.delegate = self
         devicePicker.dataSource = self
         
+        feelingPicker.delegate = self
+        feelingPicker.dataSource = self
+        
+        feelingSwitch.addTarget(self, action: #selector(self.switchValueDidChange), for: .valueChanged)
+        
         statusImgView.image = UIImage(named: "nosignal_v1")
         
         self.navigationItem.hidesBackButton = true
         let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItem.Style.plain, target: self, action: #selector(DataViewController.backButton(sender:)))
         self.navigationItem.leftBarButtonItem = newBackButton
+    }
+    
+    @objc func switchValueDidChange(sender:UISwitch!) {
+        let title = "EEG Data Label Trigger"
+        var message = ""
+
+        if (sender.isOn) {
+            message = "EEG Data started being labeled as: \(feelingPickerData[feelingPicker.selectedRow(inComponent: 0)])"
+        } else {
+            message = "EEG Data stopped being labeled as: \(feelingPickerData[feelingPicker.selectedRow(inComponent: 0)])"
+        }
+        
+        let popup = PopupDialog(title: title, message: message)
+        
+        // Create buttons
+        let buttonOne = CancelButton(title: "CLOSE") {
+        }
+        popup.addButtons([buttonOne])
+        self.present(popup, animated: true, completion: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -177,12 +224,22 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     
     // The number of rows of data
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return devicePickerData.count
+        if pickerView == devicePicker {
+            return devicePickerData.count
+        } else if pickerView == feelingPicker {
+            return feelingPickerData.count
+        }
+        return 0;
     }
     
     // The data to return fopr the row and component (column) that's being passed in
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return devicePickerData[row]["deviceName"] as? String
+        if pickerView == devicePicker {
+            return devicePickerData[row]["deviceName"] as? String
+        } else if pickerView == feelingPicker {
+            return feelingPickerData[row]
+        }
+        return "";
     }
 
     override func didReceiveMemoryWarning() {
@@ -204,7 +261,6 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     }
     
     func didDisconnect() {
-        //devicePickerData.remove(at: devicePicker.selectedRow(inComponent: 0));
         //mindWaveDevice.scanDevice()
     }
 
@@ -322,7 +378,12 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         request.setValue("application/graphql", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer "+jwt, forHTTPHeaderField: "Authorization")
         
-        let mutation = "mutation {  sendEEGData (time: \"\(sample["time"]!)\", theta: \(sample["theta"]!), lowAlpha: \(sample["lowAlpha"]!), highAlpha: \(sample["highAlpha"]!), lowBeta: \(sample["lowBeta"]!), highBeta: \(sample["highBeta"]!), lowGamma: \(sample["lowGamma"]!), midGamma: \(sample["midGamma"]!), attention: \(sample["attention"]!), meditation: \(sample["meditation"]!), blink: \(sample["blink"]!)) }";
+        var feelingLabel = ""
+        if (feelingSwitch.isOn) {
+            feelingLabel = feelingPickerData[feelingPicker.selectedRow(inComponent: 0)]
+        }
+        
+        let mutation = "mutation {  sendEEGData (time: \"\(sample["time"]!)\", theta: \(sample["theta"]!), lowAlpha: \(sample["lowAlpha"]!), highAlpha: \(sample["highAlpha"]!), lowBeta: \(sample["lowBeta"]!), highBeta: \(sample["highBeta"]!), lowGamma: \(sample["lowGamma"]!), midGamma: \(sample["midGamma"]!), attention: \(sample["attention"]!), meditation: \(sample["meditation"]!), blink: \(sample["blink"]!), feelingLabel: \"\(feelingLabel)\") }";
         let data = mutation.data(using: .utf8)! as Data
         print(mutation)
         request.httpBody = data
