@@ -485,7 +485,7 @@
 					"-all_load",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.demo.PhilipsHUE;
+				PRODUCT_BUNDLE_IDENTIFIER = com.demo.HomeController;
 				PRODUCT_NAME = "eeg-brainwave-client";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/EEGBrainwave/MindWaveJournaler-Bridging-Header.h";
@@ -526,7 +526,7 @@
 					"-all_load",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.demo.PhilipsHUE;
+				PRODUCT_BUNDLE_IDENTIFIER = com.demo.HomeController;
 				PRODUCT_NAME = "eeg-brainwave-client";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/EEGBrainwave/MindWaveJournaler-Bridging-Header.h";
