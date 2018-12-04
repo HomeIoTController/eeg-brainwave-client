@@ -96,7 +96,7 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         meditationsSet.drawCircleHoleEnabled = false
         
         let attentionSet = LineChartDataSet(values: attentionVals, label: "Attention")
-        attentionSet.axisDependency = .right
+        attentionSet.axisDependency = .left
         attentionSet.setColor(.red)
         attentionSet.setCircleColor(.red)
         attentionSet.lineWidth = 2
@@ -107,7 +107,7 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         attentionSet.drawCircleHoleEnabled = false
         
         let blinkSet = LineChartDataSet(values: blinkVals, label: "Blink")
-        blinkSet.axisDependency = .right
+        blinkSet.axisDependency = .left
         blinkSet.setColor(.yellow)
         blinkSet.setCircleColor(.yellow)
         blinkSet.lineWidth = 2
@@ -234,6 +234,7 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     
     // The data to return fopr the row and component (column) that's being passed in
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        feelingSwitch.setOn(false, animated: true);
         if pickerView == devicePicker {
             return devicePickerData[row]["deviceName"] as? String
         } else if pickerView == feelingPicker {

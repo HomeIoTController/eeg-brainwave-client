@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		00BAE1D8E6A41413A3E350A9 /* Pods_eeg_brainwave_client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCAF888A90C938408B817E25 /* Pods_eeg_brainwave_client.framework */; };
 		07D52D551892E57D0056CCE3 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07D52D541892E57D0056CCE3 /* Accelerate.framework */; };
-		652AFACD21B1550600C3D32C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 652AFACB21B1550600C3D32C /* LaunchScreen.storyboard */; };
 		652AFACE21B1550600C3D32C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 652AFACC21B1550600C3D32C /* Main.storyboard */; };
+		652D59EC21B62CE600BA8043 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 652D59EB21B62CE600BA8043 /* LaunchScreen.storyboard */; };
 		657C8F7D21AF3E60009EE696 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657C8F7721AF3E60009EE696 /* Utils.swift */; };
 		657C8F7E21AF3E60009EE696 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657C8F7821AF3E60009EE696 /* LoginViewController.swift */; };
 		657C8F7F21AF3E60009EE696 /* MindMobileEEGSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657C8F7A21AF3E60009EE696 /* MindMobileEEGSample.swift */; };
@@ -32,8 +32,8 @@
 		21520D6CEFA89940D4EECA9F /* Pods-HelloMWMiOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloMWMiOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HelloMWMiOS/Pods-HelloMWMiOS.debug.xcconfig"; sourceTree = "<group>"; };
 		5468F23F2EDBEC591771C28E /* Pods_HelloMWMiOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HelloMWMiOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F1547EBD5DCF59F66D27003 /* Pods-HelloMWMiOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloMWMiOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-HelloMWMiOS/Pods-HelloMWMiOS.release.xcconfig"; sourceTree = "<group>"; };
-		652AFACB21B1550600C3D32C /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "/Users/daniel/Desktop/workspace/PhilipsHUEController/eeg-brainwave-client/MWMSample/EEGBrainwave/LaunchScreen.storyboard"; sourceTree = "<absolute>"; };
 		652AFACC21B1550600C3D32C /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		652D59EB21B62CE600BA8043 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		657C8F7421AF3CB5009EE696 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = EEGBrainwave/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		657C8F7721AF3E60009EE696 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Utils.swift; path = EEGBrainwave/Utils.swift; sourceTree = SOURCE_ROOT; };
 		657C8F7821AF3E60009EE696 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = EEGBrainwave/LoginViewController.swift; sourceTree = SOURCE_ROOT; };
@@ -163,7 +163,7 @@
 		D327014B1891FD8200063681 /* eeg-brainwave-client */ = {
 			isa = PBXGroup;
 			children = (
-				652AFACB21B1550600C3D32C /* LaunchScreen.storyboard */,
+				652D59EB21B62CE600BA8043 /* LaunchScreen.storyboard */,
 				652AFACC21B1550600C3D32C /* Main.storyboard */,
 				657C8F9021AF3E71009EE696 /* AppDelegate.swift */,
 				657C8F8D21AF3E71009EE696 /* DataViewController.swift */,
@@ -260,8 +260,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				657C8F9921AF3FD5009EE696 /* Images.xcassets in Resources */,
+				652D59EC21B62CE600BA8043 /* LaunchScreen.storyboard in Resources */,
 				652AFACE21B1550600C3D32C /* Main.storyboard in Resources */,
-				652AFACD21B1550600C3D32C /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -477,9 +477,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/HelloConnect/",
-					"$(PROJECT_DIR)/HelloConnect",
-					"$(PROJECT_DIR)/HelloConnect/libn",
 					"$(PROJECT_DIR)/EEGBrainwave/libn",
 				);
 				ONLY_ACTIVE_ARCH = NO;
@@ -521,9 +518,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/HelloConnect/",
-					"$(PROJECT_DIR)/HelloConnect",
-					"$(PROJECT_DIR)/HelloConnect/libn",
 					"$(PROJECT_DIR)/EEGBrainwave/libn",
 				);
 				ONLY_ACTIVE_ARCH = NO;
