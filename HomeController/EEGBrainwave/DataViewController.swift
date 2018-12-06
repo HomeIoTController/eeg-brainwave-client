@@ -1,6 +1,6 @@
 //
 //  DataViewController
-//  MindWaveJournaler
+//  eeg-brainwave-client
 //
 //  Created by Daniel Marchena on 8/10/18.
 //

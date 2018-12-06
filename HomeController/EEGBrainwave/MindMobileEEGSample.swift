@@ -1,9 +1,8 @@
 //
 //  MindMobileEEGSample.swift
-//  MindWaveJournaler
+//  eeg-brainwave-client
 //
-//  Created by Casey Brittain on 8/11/18.
-//  Copyright © 2018 Honeysuckle Hardware. All rights reserved.
+//  Created by Daniel Marchena on 8/8/18.
 //
 
 import Foundation

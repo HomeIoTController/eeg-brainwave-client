@@ -3,7 +3,6 @@
 //  eeg-brainwave-client
 //
 //  Created by Daniel Marchena Parreira on 2018-11-28.
-//  Copyright © 2018 neurosky. All rights reserved.
 //
 
 import Foundation
