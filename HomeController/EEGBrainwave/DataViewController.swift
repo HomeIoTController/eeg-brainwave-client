@@ -19,6 +19,9 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     @IBOutlet weak var devicePicker: UIPickerView!
     @IBOutlet weak var feelingPicker: UIPickerView!
     @IBOutlet weak var feelingSwitch: UISwitch!
+    @IBOutlet weak var smoLabel: UILabel!
+    @IBOutlet weak var mlPerceptronLabel: UILabel!
+    @IBOutlet weak var randomForestLabel: UILabel!
     
     var devicePickerData: [Parameters] = [];
     var feelingPickerData: [String] = [
@@ -44,7 +47,6 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     
     var jwt: String!
     var brainCommands : [Parameters] = []
-    var enableTriggerCommand = true
     
     var meditations : [Int32] = []
     var attentions : [Int32] = []
@@ -66,6 +68,9 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     let sampleInProcess = MindMobileEEGSample();
     
     let central = CBCentralManager()
+    
+    let serverAddrs: String = ProcessInfo.processInfo.environment["server_addrs"] ?? "localhost:3000";
+    var request: URLRequest? = nil;
     
     func updateMainGraph(sample: Parameters){
         meditations.append(sample["meditation"] as! Int32);
@@ -165,6 +170,11 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         self.navigationItem.hidesBackButton = true
         let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItem.Style.plain, target: self, action: #selector(DataViewController.backButton(sender:)))
         self.navigationItem.leftBarButtonItem = newBackButton
+        
+        self.request = URLRequest(url: URL(string: "http://"+serverAddrs+"/graphql/")!)
+        self.request?.httpMethod = HTTPMethod.post.rawValue
+        self.request?.setValue("application/graphql", forHTTPHeaderField: "Content-Type")
+        self.request?.setValue("Bearer "+jwt, forHTTPHeaderField: "Authorization")
     }
     
     @objc func switchValueDidChange(sender:UISwitch!) {
@@ -178,10 +188,7 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         }
         
         let popup = PopupDialog(title: title, message: message)
-        
-        // Create buttons
-        let buttonOne = CancelButton(title: "CLOSE") {
-        }
+        let buttonOne = CancelButton(title: "CLOSE") {}
         popup.addButtons([buttonOne])
         self.present(popup, animated: true, completion: nil)
     }
@@ -189,32 +196,24 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated) // No need for semicolon
         
-        let serverAddrs: String = ProcessInfo.processInfo.environment["server_addrs"] ?? "localhost:3000";
+        let data = ("{ user { commands { from to valueTo valueFrom type } } }".data(using: .utf8))! as Data
+        self.request?.httpBody = data
         
-        var request = URLRequest(url: URL(string: "http://"+serverAddrs+"/graphql/")!)
-        request.httpMethod = HTTPMethod.post.rawValue
-        request.setValue("application/graphql", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer "+jwt, forHTTPHeaderField: "Authorization")
-        
-        let data = ("{ commands { from to valueTo valueFrom type } }".data(using: .utf8))! as Data
-        request.httpBody = data
-        
-        Alamofire.request(request).responseJSON { response in
-            
+        Alamofire.request(self.request!).responseJSON { response in
             if let json = response.result.value {
                 print("JSON: \(json)") // serialized json response
             }
     
             if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
                 let response = Utils.convertToDictionary(text: utf8Text);
-                self.brainCommands = (response?["data"] as! Parameters)["commands"] as! [Parameters]
+                let user = (response?["data"] as! Parameters)["user"] as! Parameters
+                self.brainCommands = user["commands"] as! [Parameters]
             }
         }
     }
     
     @objc func backButton(sender: UIBarButtonItem) {
         mindWaveDevice.disconnectDevice();
-        self.navigationController?.popViewController(animated: true)
     }
     
     // Number of columns of data
@@ -262,6 +261,7 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     }
     
     func didDisconnect() {
+        self.navigationController?.popViewController(animated: true)
         //mindWaveDevice.scanDevice()
     }
 
@@ -300,36 +300,24 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     }
     
     func sendCommandToServer(command: Parameters) {
-        let serverAddrs: String = ProcessInfo.processInfo.environment["server_addrs"] ?? "localhost:3000";
         
-        var request = URLRequest(url: URL(string: "http://"+serverAddrs+"/graphql/")!)
-        request.httpMethod = HTTPMethod.post.rawValue
-        request.setValue("application/graphql", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer "+jwt, forHTTPHeaderField: "Authorization")
-        
-        let mutation = "mutation { sendCommand(fromCommand: \"\(command["from"]!)\", type: \"\(command["type"]!)\", valueFrom: \"\(command["valueFrom"]!)\", valueTo: \"\(command["valueTo"]!)\" ) }";
+        let mutation = "mutation { user { sendCommand(fromCommand: \"\(command["from"]!)\", type: \"\(command["type"]!)\", valueFrom: \"\(command["valueFrom"]!)\", valueTo: \"\(command["valueTo"]!)\" ) } }";
         let data = mutation.data(using: .utf8)! as Data
-        request.httpBody = data
+        self.request?.httpBody = data
         
-        Alamofire.request(request).responseJSON { response in
+        Alamofire.request(self.request!).responseJSON { response in
             
-            self.enableTriggerCommand = false;
-            
-            print("Result: \(response.result)")                         // response serialization result
+            print("Result: \(response.result)")
             
             if let json = response.result.value {
-                print("JSON: \(json)") // serialized json response
+                print("JSON: \(json)")
             }
             
             let title = "Command triggered!"
             let message = "Command \"\(command["from"]!)\"  from \(command["valueFrom"]!) to \(command["valueTo"]!) -> \(command["to"]!)"
             
             let popup = PopupDialog(title: title, message: message)
-            
-            // Create buttons
-            let buttonOne = CancelButton(title: "CANCEL") {
-                self.enableTriggerCommand = true;
-            }
+            let buttonOne = CancelButton(title: "CANCEL") {}
             popup.addButtons([buttonOne])
             self.present(popup, animated: true, completion: nil)
         }
@@ -337,9 +325,7 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     }
     
     func triggerCommandCall(sample: Parameters) {
-        
-        //if (self.enableTriggerCommand == false) { return; }
-        
+
         self.brainCommands.forEach { (command) in
             if (command["type"] as! String != "bciCommand") {
                 return
@@ -367,34 +353,51 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
                     sendCommandToServer(command: command);
                 }
             }
-           
         }
     }
     
-    func sendEEGDataToServer(sample: Parameters) {
-        let serverAddrs: String = ProcessInfo.processInfo.environment["server_addrs"] ?? "localhost:3000";
-        
-        var request = URLRequest(url: URL(string: "http://"+serverAddrs+"/graphql/")!)
-        request.httpMethod = HTTPMethod.post.rawValue
-        request.setValue("application/graphql", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer "+jwt, forHTTPHeaderField: "Authorization")
+    func storeEEGData(sample: Parameters) {
         
         var feelingLabel = ""
         if (feelingSwitch.isOn) {
             feelingLabel = feelingPickerData[feelingPicker.selectedRow(inComponent: 0)]
         }
         
-        let mutation = "mutation {  sendEEGData (time: \"\(sample["time"]!)\", theta: \(sample["theta"]!), lowAlpha: \(sample["lowAlpha"]!), highAlpha: \(sample["highAlpha"]!), lowBeta: \(sample["lowBeta"]!), highBeta: \(sample["highBeta"]!), lowGamma: \(sample["lowGamma"]!), midGamma: \(sample["midGamma"]!), attention: \(sample["attention"]!), meditation: \(sample["meditation"]!), blink: \(sample["blink"]!), feelingLabel: \"\(feelingLabel)\") }";
-        let data = mutation.data(using: .utf8)! as Data
-        print(mutation)
-        request.httpBody = data
+        let mutation = "mutation { user { sendEEGData (data: { time: \"\(sample["time"]!)\", theta: \(sample["theta"]!), lowAlpha: \(sample["lowAlpha"]!), highAlpha: \(sample["highAlpha"]!), lowBeta: \(sample["lowBeta"]!), highBeta: \(sample["highBeta"]!), lowGamma: \(sample["lowGamma"]!), midGamma: \(sample["midGamma"]!), attention: \(sample["attention"]!), meditation: \(sample["meditation"]!), blink: \(sample["blink"]!), feelingLabel: \"\(feelingLabel)\" }) } }";
         
-        Alamofire.request(request).responseJSON { response in
-            
-            print("Result: \(response.result)")                         // response serialization result
+        let data = mutation.data(using: .utf8)! as Data
+        self.request?.httpBody = data
+        
+        Alamofire.request(self.request!).responseJSON { response in
+            print("Result: \(response.result)")
             
             if let json = response.result.value {
                 print("JSON: \(json)") // serialized json response
+            }
+        }
+    }
+    
+    func classifyEEGData(sample: Parameters) {
+        
+        let mutation = "mutation { user { classifyEEGData (data: { time: \"\(sample["time"]!)\", theta: \(sample["theta"]!), lowAlpha: \(sample["lowAlpha"]!), highAlpha: \(sample["highAlpha"]!), lowBeta: \(sample["lowBeta"]!), highBeta: \(sample["highBeta"]!), lowGamma: \(sample["lowGamma"]!), midGamma: \(sample["midGamma"]!), attention: \(sample["attention"]!), meditation: \(sample["meditation"]!), blink: \(sample["blink"]!) }) { SMO, RANDOM_FOREST, MULTILAYER_PERCEPTRON } } }";
+
+        let data = mutation.data(using: .utf8)! as Data
+        self.request?.httpBody = data
+        
+        Alamofire.request(self.request!).responseJSON { response in
+            
+            print("Result: \(response.result)")
+            
+            if let json = response.result.value {
+                print("JSON: \(json)")
+            }
+            
+            if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
+                let response = Utils.convertToDictionary(text: utf8Text);
+                let classifiers = ((response?["data"] as! Parameters)["user"] as! Parameters)["classifyEEGData"] as! Parameters;
+                self.mlPerceptronLabel.text = classifiers["MULTILAYER_PERCEPTRON"] as? String
+                self.smoLabel.text = classifiers["SMO"] as? String
+                self.randomForestLabel.text = classifiers["RANDOM_FOREST"] as? String
             }
         }
     }
@@ -403,7 +406,8 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         updateSignalStatus(poorSignal: sample["poorSignal"] as! Int32)
         updateMainGraph(sample: sample)
         triggerCommandCall(sample: sample)
-        sendEEGDataToServer(sample: sample)
+        storeEEGData(sample: sample)
+        classifyEEGData(sample: sample)
     }
     
 }

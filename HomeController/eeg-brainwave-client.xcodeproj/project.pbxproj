@@ -14,7 +14,6 @@
 		657C8F7D21AF3E60009EE696 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657C8F7721AF3E60009EE696 /* Utils.swift */; };
 		657C8F7E21AF3E60009EE696 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657C8F7821AF3E60009EE696 /* LoginViewController.swift */; };
 		657C8F7F21AF3E60009EE696 /* MindMobileEEGSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657C8F7A21AF3E60009EE696 /* MindMobileEEGSample.swift */; };
-		657C8F9521AF3E71009EE696 /* libMWMSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 657C8F8B21AF3E71009EE696 /* libMWMSDK.a */; };
 		657C8F9621AF3E71009EE696 /* DataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657C8F8D21AF3E71009EE696 /* DataViewController.swift */; };
 		657C8F9821AF3E71009EE696 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657C8F9021AF3E71009EE696 /* AppDelegate.swift */; };
 		657C8F9921AF3FD5009EE696 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 657C8F8221AF3E71009EE696 /* Images.xcassets */; };
@@ -86,7 +85,6 @@
 				FF48FCBF1991A8BD00F0BDB5 /* AudioToolbox.framework in Frameworks */,
 				D32701481891FD8200063681 /* CoreGraphics.framework in Frameworks */,
 				D32701461891FD8200063681 /* Foundation.framework in Frameworks */,
-				657C8F9521AF3E71009EE696 /* libMWMSDK.a in Frameworks */,
 				00BAE1D8E6A41413A3E350A9 /* Pods_eeg_brainwave_client.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
