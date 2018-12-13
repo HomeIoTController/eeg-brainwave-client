@@ -317,7 +317,7 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
             let message = "Command \"\(command["from"]!)\"  from \(command["valueFrom"]!) to \(command["valueTo"]!) -> \(command["to"]!)"
             
             let popup = PopupDialog(title: title, message: message)
-            let buttonOne = CancelButton(title: "CANCEL") {}
+            let buttonOne = CancelButton(title: "CLOSE") {}
             popup.addButtons([buttonOne])
             self.present(popup, animated: true, completion: nil)
         }
@@ -379,7 +379,9 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     
     func classifyEEGData(sample: Parameters) {
         
-        let mutation = "mutation { user { classifyEEGData (data: { time: \"\(sample["time"]!)\", theta: \(sample["theta"]!), lowAlpha: \(sample["lowAlpha"]!), highAlpha: \(sample["highAlpha"]!), lowBeta: \(sample["lowBeta"]!), highBeta: \(sample["highBeta"]!), lowGamma: \(sample["lowGamma"]!), midGamma: \(sample["midGamma"]!), attention: \(sample["attention"]!), meditation: \(sample["meditation"]!), blink: \(sample["blink"]!) }) { SMO, RANDOM_FOREST, MULTILAYER_PERCEPTRON } } }";
+        //let mutation = "mutation { user { classifyEEGData (data: { time: \"\(sample["time"]!)\", theta: \(sample["theta"]!), lowAlpha: \(sample["lowAlpha"]!), highAlpha: \(sample["highAlpha"]!), lowBeta: \(sample["lowBeta"]!), highBeta: \(sample["highBeta"]!), lowGamma: \(sample["lowGamma"]!), midGamma: \(sample["midGamma"]!), attention: \(sample["attention"]!), meditation: \(sample["meditation"]!), blink: \(sample["blink"]!) }) { SMO, RANDOM_FOREST, MULTILAYER_PERCEPTRON } } }";
+        
+        let mutation = "{ user { latestEEGClassification { SMO, RANDOM_FOREST, MULTILAYER_PERCEPTRON } } }";
 
         let data = mutation.data(using: .utf8)! as Data
         self.request?.httpBody = data
@@ -394,7 +396,7 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
             
             if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
                 let response = Utils.convertToDictionary(text: utf8Text);
-                let classifiers = ((response?["data"] as! Parameters)["user"] as! Parameters)["classifyEEGData"] as! Parameters;
+                let classifiers = ((response?["data"] as! Parameters)["user"] as! Parameters)["latestEEGClassification"] as! Parameters;
                 self.mlPerceptronLabel.text = classifiers["MULTILAYER_PERCEPTRON"] as? String
                 self.smoLabel.text = classifiers["SMO"] as? String
                 self.randomForestLabel.text = classifiers["RANDOM_FOREST"] as? String
