@@ -1,19 +1,14 @@
-# Light Control - BCI
+# Homer Controller - Brainwave Command Listener
 
-This is an iOS app that connects with MindWave 2 Mobile via bluetooth in order to dispatch commands to [Light Control - GraphQL API](https://github.com/PhilipsHUEController/api).
+This is an iOS app that connects with MindWave 2 Mobile via bluetooth in order to collect, send and present brainwave that. On that note, this application collects `eeg` data from the user, presents it in a real time graph and dispatches it directly to [graphql-api](https://github.com/PhilipsHUEController/api). Also, it shows real time classifications of users brainwaves.
 
 ## Getting Started
 
-* Clone the project repository by running the command bellow if you use HTTPS
-  * ```git clone https://github.com/PhilipsHUEController/eeg-brainwave-client.git```
-
-
-* After cloning, run:
-  * Install [Cocoa Pods](https://cocoapods.org/)
-  * `pod install`
-
-
+* Install [Cocoa Pods](https://cocoapods.org/)
+* Run `pod install` in order to install project dependencies
 * Open `eeg-brainwave-client.xcworkspace` project file
+* Select a real apple device and click `Run`.
+  * This application does not work with the simulator since it uses bluetooth. Moreover, MindWave 2 Mobile library (called `libMWMSDK.a`) was only compiled for `arm7` and `arm64`. That means this only works in a real device.
 
 ## Quick description about MWM Comm SDK from NeuroSky
 
@@ -29,45 +24,3 @@ send email to support@neurosky.com.
 
 For developer community support, please visit our community forum on
 http://www.linkedin.com/groups/NeuroSky-Brain-Computer-Interface-Technology-3572341
-
-
-Happy coding!
-
-Version History
----------------
-2017-12-27: version 0.2.9
-- Add device name MyndBandBLE
-- Add exceptionMessage delegate
-- Remove alert inside MWM SDK
-
-2017-06-16: version 0.2.8
-- Add stopScanDevice to stop scanning BLE devices
-
-2017-05-24: version 0.2.7
-- Remove useless connected signal
-- Fix issues
-
-2016-12-12: version 0.2.6
-- Add more description with BrainLink support
-
-2016-10-18: version 0.2.5
-- Trigger "didDisconnect" delegate while STATE_STOPPED
-
-2016-10-11: version 0.2.4
-- Allow to scan BT device for several times
-- Exchange order of scanning device
-
-2016-10-10: version 0.2.3
-- Fix log issues
-
-2016-10-08: version 0.2.2
-- Change the SDK name to "MWM Comm SDK for iOS"
-- Update document
-
-2016-09-26: version 0.2.1
-- Fix issue in V0.2.0
-- Add enableConsoleLog, enableLoggingWithOptions and stopLogging methods
-
-2016-09-19: version 0.2.0
-- Init
-- Support BT and BLE Devices of MindWave Mobile
