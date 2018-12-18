@@ -5,7 +5,7 @@ This is an iOS app that connects with MindWave 2 Mobile via bluetooth in order t
 ## Getting Started
 
 * Install [Cocoa Pods](https://cocoapods.org/)
-* Run `pod install` in order to install project dependencies
+* Run `cd HomeController && pod install` in order to install project dependencies
 * Open `eeg-brainwave-client.xcworkspace` project file
 * Select a real apple device and click `Run`.
   * This application does not work with the simulator since it uses bluetooth. Moreover, MindWave 2 Mobile library (called `libMWMSDK.a`) was only compiled for `arm7` and `arm64`. That means this only works in a real device.
