@@ -17,52 +17,24 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     @IBOutlet weak var mainChart: LineChartView!
     @IBOutlet weak var statusImgView: UIImageView!
     @IBOutlet weak var devicePicker: UIPickerView!
-    @IBOutlet weak var feelingPicker: UIPickerView!
-    @IBOutlet weak var feelingSwitch: UISwitch!
+    
+    @IBOutlet weak var classifierView: UIView!
+    @IBOutlet weak var statePicker: UIPickerView!
+    @IBOutlet weak var stateSwitch: UISwitch!
     @IBOutlet weak var smoLabel: UILabel!
     @IBOutlet weak var mlPerceptronLabel: UILabel!
     @IBOutlet weak var randomForestLabel: UILabel!
     
     var devicePickerData: [Parameters] = [];
-    var feelingPickerData: [String] = [
-        // Pleasant Feelings
-        "OPEN",
-        "HAPPY",
-        "ALIVE",
-        "GOOD",
-        "LOVE",
-        "INTERESTED",
-        "POSITIVE",
-        "STRONG",
-        // Difficult/Unpleasant Feelings
-        "ANGRY",
-        "DEPRESSED",
-        "CONFUSED",
-        "HELPLESS",
-        "INDIFFERENT",
-        "AFRAID",
-        "HURT",
-        "SAD"
-    ];
+    var statePickerData: [String] = [];
     
     var jwt: String!
     var brainCommands : [Parameters] = []
+    var mindWaveDeviceConnected: Bool = false
     
     var meditations : [Int32] = []
     var attentions : [Int32] = []
     var blinks : [Int32] = []
-    
-    var lowAlphas : [Int32] = []
-    var highAlphas : [Int32] = []
-    var lowBetas : [Int32] = []
-    var highBetas : [Int32] = []
-    var lowGammas : [Int32] = []
-    var midGammas : [Int32] = []
-    var thetas : [Int32] = []
-    
-    var poorSignals : [Int32] = []
-    
-    var times : [Date] = []
     
     let mindWaveDevice = MWMDevice();
     let sampleInProcess = MindMobileEEGSample();
@@ -76,8 +48,6 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         meditations.append(sample["meditation"] as! Int32);
         attentions.append(sample["attention"] as! Int32);
         blinks.append(sample["blink"] as! Int32);
-        
-        print(sample)
         
         let meditationVals = meditations.enumerated().map { (index, element) -> ChartDataEntry in
             return ChartDataEntry(x: Double(index), y: Double(element))
@@ -145,6 +115,28 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
             print("BLE Off")
         }
     }
+    
+    func loadStates() {
+        let data = ("{ user { states } }".data(using: .utf8))! as Data
+        self.request?.httpBody = data
+        
+        Alamofire.request(self.request!).responseJSON { response in
+            if let json = response.result.value {
+                print("JSON: \(json)") // serialized json response
+            }
+            
+            if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
+                let response = Utils.convertToDictionary(text: utf8Text);
+                let user = (response?["data"] as! Parameters)["user"] as! Parameters
+                self.statePickerData = user["states"] as! [String]
+                if (self.statePickerData.count <= 1) {
+                    self.classifierView.isHidden = true;
+                } else {
+                    self.statePicker.reloadAllComponents();
+                }
+            }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -160,10 +152,10 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         devicePicker.delegate = self
         devicePicker.dataSource = self
         
-        feelingPicker.delegate = self
-        feelingPicker.dataSource = self
+        statePicker.delegate = self
+        statePicker.dataSource = self
         
-        feelingSwitch.addTarget(self, action: #selector(self.switchValueDidChange), for: .valueChanged)
+        stateSwitch.addTarget(self, action: #selector(self.switchValueDidChange), for: .valueChanged)
         
         statusImgView.image = UIImage(named: "nosignal_v1")
         
@@ -175,6 +167,8 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         self.request?.httpMethod = HTTPMethod.post.rawValue
         self.request?.setValue("application/graphql", forHTTPHeaderField: "Content-Type")
         self.request?.setValue("Bearer "+jwt, forHTTPHeaderField: "Authorization")
+        
+        self.loadStates()
     }
     
     @objc func switchValueDidChange(sender:UISwitch!) {
@@ -182,9 +176,9 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         var message = ""
 
         if (sender.isOn) {
-            message = "EEG Data started being labeled as: \(feelingPickerData[feelingPicker.selectedRow(inComponent: 0)])"
+            message = "EEG Data started being labeled as: \(statePickerData[statePicker.selectedRow(inComponent: 0)])"
         } else {
-            message = "EEG Data stopped being labeled as: \(feelingPickerData[feelingPicker.selectedRow(inComponent: 0)])"
+            message = "EEG Data stopped being labeled as: \(statePickerData[statePicker.selectedRow(inComponent: 0)])"
         }
         
         let popup = PopupDialog(title: title, message: message)
@@ -213,6 +207,9 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     }
     
     @objc func backButton(sender: UIBarButtonItem) {
+        if (!self.mindWaveDeviceConnected) {
+            self.navigationController?.popViewController(animated: true)
+        }
         mindWaveDevice.disconnectDevice();
     }
     
@@ -225,19 +222,19 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if pickerView == devicePicker {
             return devicePickerData.count
-        } else if pickerView == feelingPicker {
-            return feelingPickerData.count
+        } else if pickerView == statePicker {
+            return statePickerData.count
         }
         return 0;
     }
     
     // The data to return fopr the row and component (column) that's being passed in
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        feelingSwitch.setOn(false, animated: true);
+        stateSwitch.setOn(false, animated: true);
         if pickerView == devicePicker {
             return devicePickerData[row]["deviceName"] as? String
-        } else if pickerView == feelingPicker {
-            return feelingPickerData[row]
+        } else if pickerView == statePicker {
+            return statePickerData[row]
         }
         return "";
     }
@@ -257,10 +254,12 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     }
     
     func didConnect() {
+        self.mindWaveDeviceConnected = true;
         print("Connected")
     }
     
     func didDisconnect() {
+        self.mindWaveDeviceConnected = false;
         self.navigationController?.popViewController(animated: true)
         //mindWaveDevice.scanDevice()
     }
@@ -358,12 +357,12 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     
     func storeEEGData(sample: Parameters) {
         
-        var feelingLabel = ""
-        if (feelingSwitch.isOn) {
-            feelingLabel = feelingPickerData[feelingPicker.selectedRow(inComponent: 0)]
+        var state = ""
+        if (!classifierView.isHidden && stateSwitch.isOn) {
+            state = statePickerData[statePicker.selectedRow(inComponent: 0)]
         }
         
-        let mutation = "mutation { user { sendEEGData (data: { time: \"\(sample["time"]!)\", theta: \(sample["theta"]!), lowAlpha: \(sample["lowAlpha"]!), highAlpha: \(sample["highAlpha"]!), lowBeta: \(sample["lowBeta"]!), highBeta: \(sample["highBeta"]!), lowGamma: \(sample["lowGamma"]!), midGamma: \(sample["midGamma"]!), attention: \(sample["attention"]!), meditation: \(sample["meditation"]!), blink: \(sample["blink"]!), feelingLabel: \"\(feelingLabel)\" }) } }";
+        let mutation = "mutation { user { sendEEGData (data: { time: \"\(sample["time"]!)\", theta: \(sample["theta"]!), lowAlpha: \(sample["lowAlpha"]!), highAlpha: \(sample["highAlpha"]!), lowBeta: \(sample["lowBeta"]!), highBeta: \(sample["highBeta"]!), lowGamma: \(sample["lowGamma"]!), midGamma: \(sample["midGamma"]!), attention: \(sample["attention"]!), meditation: \(sample["meditation"]!), blink: \(sample["blink"]!), state: \"\(state)\" }) } }";
         
         let data = mutation.data(using: .utf8)! as Data
         self.request?.httpBody = data
@@ -377,9 +376,7 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         }
     }
     
-    func classifyEEGData(sample: Parameters) {
-        
-        //let mutation = "mutation { user { classifyEEGData (data: { time: \"\(sample["time"]!)\", theta: \(sample["theta"]!), lowAlpha: \(sample["lowAlpha"]!), highAlpha: \(sample["highAlpha"]!), lowBeta: \(sample["lowBeta"]!), highBeta: \(sample["highBeta"]!), lowGamma: \(sample["lowGamma"]!), midGamma: \(sample["midGamma"]!), attention: \(sample["attention"]!), meditation: \(sample["meditation"]!), blink: \(sample["blink"]!) }) { SMO, RANDOM_FOREST, MULTILAYER_PERCEPTRON } } }";
+    func updateEEGDataClassification() {
         
         let mutation = "{ user { latestEEGClassification { SMO, RANDOM_FOREST, MULTILAYER_PERCEPTRON } } }";
 
@@ -409,8 +406,7 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         updateMainGraph(sample: sample)
         triggerCommandCall(sample: sample)
         storeEEGData(sample: sample)
-        classifyEEGData(sample: sample)
+        updateEEGDataClassification()
     }
     
 }
-

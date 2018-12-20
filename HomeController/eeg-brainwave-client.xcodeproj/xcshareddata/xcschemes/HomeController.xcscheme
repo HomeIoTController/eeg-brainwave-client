@@ -64,7 +64,7 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "server_addrs"
-            value = "192.168.2.25:3000"
+            value = "d8deb33f.ngrok.io"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>

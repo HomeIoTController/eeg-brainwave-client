@@ -38,7 +38,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             "variables": Utils.convertToDictionary(text: "{\"email\":\"" + emailField.text! + "\",\"password\":\"" + passwordField.text! + "\"}")!
         ]
         
-        let serverAddrs: String = ProcessInfo.processInfo.environment["server_addrs"] ?? "192.168.2.25:3000";
+        let serverAddrs: String = ProcessInfo.processInfo.environment["server_addrs"] ?? "192.168.1.39:3000";
         
         Alamofire.request("http://"+serverAddrs+"/graphql", method: .post, parameters: parameters, encoding: JSONEncoding.default).responseJSON { response in
 
