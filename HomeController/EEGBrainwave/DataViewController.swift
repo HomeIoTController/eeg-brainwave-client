@@ -164,6 +164,7 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         self.navigationItem.leftBarButtonItem = newBackButton
         
         self.request = URLRequest(url: URL(string: "http://"+serverAddrs+"/graphql/")!)
+        self.request?.timeoutInterval = 50 // 50 secs
         self.request?.httpMethod = HTTPMethod.post.rawValue
         self.request?.setValue("application/graphql", forHTTPHeaderField: "Content-Type")
         self.request?.setValue("Bearer "+jwt, forHTTPHeaderField: "Authorization")
@@ -298,7 +299,7 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         }
     }
     
-    func sendCommandToServer(command: Parameters) {
+    func sendCommandToServer(command: Parameters, showPopup: Bool) {
         
         let mutation = "mutation { user { sendCommand(fromCommand: \"\(command["from"]!)\", type: \"\(command["type"]!)\", valueFrom: \"\(command["valueFrom"]!)\", valueTo: \"\(command["valueTo"]!)\" ) } }";
         let data = mutation.data(using: .utf8)! as Data
@@ -313,12 +314,17 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
             }
             
             let title = "Command triggered!"
-            let message = "Command \"\(command["from"]!)\"  from \(command["valueFrom"]!) to \(command["valueTo"]!) -> \(command["to"]!)"
-            
+            var message = ""
+            if (command["valueFrom"] as! String == "" && command["valueTo"] as! String  == "") {
+                message = "Command \"\(command["from"]!)\" -> \(command["to"]!)"
+            } else {
+                message = "Command \"\(command["from"]!)\"  from \(command["valueFrom"]!) to \(command["valueTo"]!) -> \(command["to"]!)"
+            }
+           
             let popup = PopupDialog(title: title, message: message)
             let buttonOne = CancelButton(title: "CLOSE") {}
             popup.addButtons([buttonOne])
-            self.present(popup, animated: true, completion: nil)
+            if (showPopup) { self.present(popup, animated: true, completion: nil) }
         }
         
     }
@@ -330,26 +336,32 @@ class DataViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
                 return
             }
             
+            if (command["from"] as? String == mlPerceptronLabel.text &&
+                command["from"] as? String == smoLabel.text &&
+                command["from"] as? String == randomForestLabel.text) {
+                sendCommandToServer(command: command, showPopup: false);
+            }
+            
             if (command["from"] as! String == "attention") {
                 let currentAttention  = sample["attention"] as! Int32;
                 let valueTo = (command["valueTo"] as! NSString).intValue;
                 let valueFrom = (command["valueFrom"] as! NSString).intValue;
                 if (currentAttention >= valueFrom && currentAttention <= valueTo) {
-                    sendCommandToServer(command: command);
+                    sendCommandToServer(command: command, showPopup: true);
                 }
             } else if (command["from"] as! String == "blinking") {
                 let currentBlink = sample["blink"] as! Int32;
                 let valueTo = (command["valueTo"] as! NSString).intValue;
                 let valueFrom = (command["valueFrom"] as! NSString).intValue;
                 if (currentBlink >= valueFrom && currentBlink <= valueTo) {
-                    sendCommandToServer(command: command);
+                    sendCommandToServer(command: command, showPopup: true);
                 }
             } else if (command["from"] as! String == "meditation") {
                 let meditationAttention = sample["meditation"] as! Int32;
                 let valueTo = (command["valueTo"] as! NSString).intValue;
                 let valueFrom = (command["valueFrom"] as! NSString).intValue;
                 if (meditationAttention >= valueFrom && meditationAttention <= valueTo) {
-                    sendCommandToServer(command: command);
+                    sendCommandToServer(command: command, showPopup: true);
                 }
             }
         }
